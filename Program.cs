@@ -111,7 +111,6 @@ namespace BlogsConsole
                     blogId = query.BlogId;
                     blogName = query.Name;
 
-
                     do
                     {
                         Console.WriteLine("Please enter the post title.");
@@ -145,12 +144,73 @@ namespace BlogsConsole
 
         public static void displayPosts() {
             string response = "";
+            int blogId;
+            string blogName;
+            var db = new BloggingContext();
+            bool blogExists = false;
+            var name = "";
+            string postTitle = "";
+            string postContent = "";
             do
             {
                 Console.WriteLine("1. View posts from specific blog.");
                 Console.WriteLine("2. View posts from all blogs.");
                 response = Console.ReadLine();
-                if (response != "1" && response != "2") {
+                
+                if (response == "1")
+                {
+                    // we run this until they enter a blog post that exists 
+                    do
+                    {
+                        Console.Write("Enter the name of the blog or 'Q' to quit: ");
+
+                        name = Console.ReadLine();
+                        var query = db.Blogs.Where(b => b.Name == name)
+                                           .FirstOrDefault();
+
+                        if (query != null)
+                        {
+                            blogExists = true;
+                            blogId = query.BlogId;
+                            blogName = query.Name;
+                            var postQuery = db.Posts.Where(b => b.BlogId == blogId);
+
+                            Console.WriteLine("All posts from blog {blogName} in the database:", blogName);
+
+                            if (query != null)
+                            {
+                                Console.WriteLine("data found let's go");
+
+                                foreach (var item in postQuery)
+                                {
+                                    Console.WriteLine("ID: " + item.BlogId);
+                                    Console.WriteLine("Title: " + item.Title);
+                                    Console.WriteLine("Content: " + item.Content);
+                                }
+
+                                Console.ReadLine();
+                            }
+                            else
+                            {
+                                Console.WriteLine("no data found yo wtf");
+                                Console.ReadLine();
+                            }
+
+                            logger.Info("A post titled {postTitle} has been added to {blogName}", postTitle, blogName);
+                            Console.ReadLine();
+                        }
+                        else
+                        {
+                            Console.WriteLine("Please enter a valid blog title");
+                        }
+
+                    } while (blogExists != true || name.ToUpper() != "Q");
+                }
+                else if (response == "2")
+                {
+
+                }
+                else {
                     Console.WriteLine("Please choose a valid option.");
                 }
             } while (response != "1" && response != "2");
