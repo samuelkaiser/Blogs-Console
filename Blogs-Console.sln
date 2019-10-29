@@ -1,6 +1,7 @@
-
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29123.88
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blogs-Console", "Blogs-Console.csproj", "{4F956C81-1A12-41B4-AA24-19BEDD42D2E2}"
 EndProject
 Global
@@ -13,5 +14,11 @@ Global
 		{4F956C81-1A12-41B4-AA24-19BEDD42D2E2}.Debug|x86.Build.0 = Debug|x86
 		{4F956C81-1A12-41B4-AA24-19BEDD42D2E2}.Release|x86.ActiveCfg = Release|x86
 		{4F956C81-1A12-41B4-AA24-19BEDD42D2E2}.Release|x86.Build.0 = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A40C2879-CAD9-4C98-A68D-798CED9BD336}
 	EndGlobalSection
 EndGlobal
