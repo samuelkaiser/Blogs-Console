@@ -11,7 +11,7 @@ namespace BlogsConsole
         public static void Main(string[] args)
         {
             logger.Info("Program started");
-            int response;
+            string response;
             try
             {
                 do
@@ -19,19 +19,28 @@ namespace BlogsConsole
                     Console.WriteLine("1. Display all blogs");
                     Console.WriteLine("2. Add Blog");
                     Console.WriteLine("3. Create Post");
-                    Console.WriteLine("4. Quit");
+                    Console.WriteLine("4. Display Posts");
+                    Console.WriteLine("Enter q to quit");
 
-                    Int32.TryParse(Console.ReadLine(), out response);
+                    response = Console.ReadLine();
 
-                    switch (response) {
-                        case 1: displayAllBlogs(); break;
-                        case 2: displayAddBlog(); break;
-                        case 3: displayCreatePost(); break;
-                        case 4: Console.WriteLine("Thank you for your time"); break;
-                        default: Console.WriteLine("Please choose a valid option..."); break;
+                    switch (response)
+                    {
+                        case "1": displayAllBlogs(); break;
+                        case "2": displayAddBlog(); break;
+                        case "3": displayCreatePost(); break;
+                        case "4": displayPosts(); break;
+                        default:
+                            if (response.ToUpper() == "Q")
+                            {
+                                Console.WriteLine("Bye"); break;
+                            }
+                            else {
+                                Console.WriteLine("Please choose a valid option..."); break;
+                            }
+                            
                     }
-
-                } while (response != 4);
+                } while (response.ToUpper() != "Q");
                 
             }
             catch (Exception ex)
@@ -48,13 +57,27 @@ namespace BlogsConsole
             var query = db.Blogs.OrderBy(b => b.Name);
 
             Console.WriteLine("All blogs in the database:");
-            foreach (var item in query)
+
+            if (query != null)
             {
-                Console.WriteLine(item.Name);
+                Console.WriteLine("data found let's go");
+                foreach (var item in query)
+                {
+                    Console.WriteLine(item.Name);
+                }
+
+                Console.ReadLine();
             }
+            else {
+                Console.WriteLine("no data found yo wtf");
+                Console.ReadLine();
+            }
+            
+            
         }
 
         public static void displayAddBlog() {
+
             // Create and save a new Blog
             Console.Write("Enter a name for a new Blog: ");
             var name = Console.ReadLine();
@@ -118,6 +141,19 @@ namespace BlogsConsole
                 }
 
             } while (blogExists != true || name.ToUpper() != "Q");
+        }
+
+        public static void displayPosts() {
+            string response = "";
+            do
+            {
+                Console.WriteLine("1. View posts from specific blog.");
+                Console.WriteLine("2. View posts from all blogs.");
+                response = Console.ReadLine();
+                if (response != "1" && response != "2") {
+                    Console.WriteLine("Please choose a valid option.");
+                }
+            } while (response != "1" && response != "2");
         }
     }
 }
