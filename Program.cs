@@ -56,7 +56,7 @@ namespace BlogsConsole
             // Display all Blogs from the database
             var query = db.Blogs.OrderBy(b => b.Name);
 
-            Console.WriteLine("All blogs in the database:");
+            Console.WriteLine("All blogs in the database: (" + query.Count() + " total blogs found)");
 
             if (query != null)
             {
@@ -66,21 +66,27 @@ namespace BlogsConsole
                     Console.WriteLine(item.Name);
                 }
 
-                Console.ReadLine();
             }
             else {
                 Console.WriteLine("no data found yo wtf");
-                Console.ReadLine();
             }
             
             
         }
 
         public static void displayAddBlog() {
+            var name = "";
+            do
+            {
+                // Create and save a new Blog
+                Console.Write("Enter a name for a new Blog: ");
+                name = Console.ReadLine();
+                if (name.Length < 1) {
+                    Console.WriteLine("Please enter a title that is more than one character");
+                }
 
-            // Create and save a new Blog
-            Console.Write("Enter a name for a new Blog: ");
-            var name = Console.ReadLine();
+            } while (name.Length < 1);
+            
 
             var blog = new Blog { Name = name };
 
@@ -133,7 +139,6 @@ namespace BlogsConsole
                     db.AddPost(post);
 
                     logger.Info("A post titled {postTitle} has been added to {blogName}", postTitle, blogName);
-                    Console.ReadLine();
                 }
                 else {
                     Console.WriteLine("Please enter a valid blog title");
@@ -171,13 +176,17 @@ namespace BlogsConsole
                         if (query != null)
                         {
                             blogExists = true;
+
                             blogId = query.BlogId;
+
                             blogName = query.Name;
+
+                            Console.WriteLine($"All posts from blog {blogName} in the database: (id:{blogId})", blogName, blogId);
+
                             var postQuery = db.Posts.Where(b => b.BlogId == blogId);
 
-                            Console.WriteLine("All posts from blog {blogName} in the database:", blogName);
-
-                            if (query != null)
+                            Console.ReadLine();
+                            if (postQuery != null)
                             {
                                 Console.WriteLine("data found let's go");
 
@@ -187,17 +196,11 @@ namespace BlogsConsole
                                     Console.WriteLine("Title: " + item.Title);
                                     Console.WriteLine("Content: " + item.Content);
                                 }
-
-                                Console.ReadLine();
                             }
                             else
                             {
                                 Console.WriteLine("no data found yo wtf");
-                                Console.ReadLine();
                             }
-
-                            logger.Info("A post titled {postTitle} has been added to {blogName}", postTitle, blogName);
-                            Console.ReadLine();
                         }
                         else
                         {
@@ -208,7 +211,15 @@ namespace BlogsConsole
                 }
                 else if (response == "2")
                 {
-
+                    var allPostQuery = db.Posts.OrderBy(p => p.BlogId);
+                    if (allPostQuery != null) {
+                        foreach (var item in allPostQuery)
+                        {
+                            Console.WriteLine("ID: " + item.BlogId);
+                            Console.WriteLine("Title: " + item.Title);
+                            Console.WriteLine("Content: " + item.Content);
+                        }
+                    }
                 }
                 else {
                     Console.WriteLine("Please choose a valid option.");
