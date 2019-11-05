@@ -56,16 +56,14 @@ namespace BlogsConsole
             // Display all Blogs from the database
             var query = db.Blogs.OrderBy(b => b.Name);
 
-            Console.WriteLine("All blogs in the database: (" + query.Count() + " total blogs found)");
+            Console.WriteLine("Found " + query.Count() + " total blogs:");
 
             if (query != null)
             {
-                Console.WriteLine("data found let's go");
                 foreach (var item in query)
                 {
                     Console.WriteLine(item.Name);
                 }
-
             }
             else {
                 Console.WriteLine("no data found yo wtf");
@@ -181,11 +179,11 @@ namespace BlogsConsole
 
                             blogName = query.Name;
 
-                            Console.WriteLine($"All posts from blog {blogName} in the database: (id:{blogId})", blogName, blogId);
-
                             var postQuery = db.Posts.Where(b => b.BlogId == blogId);
+                            int totalPosts = postQuery.Count();
 
-                            Console.ReadLine();
+                            Console.WriteLine($"All {totalPosts} posts from blog {blogName} in the database: (id:{blogId})", totalPosts, blogName, blogId);
+
                             if (postQuery != null)
                             {
                                 Console.WriteLine("data found let's go");
